@@ -16,7 +16,7 @@ export default function Rooms({navigation}) {
                 let data = snapshot.val()
                 setRooms(Object.entries(data))
             }
-        )
+        ) 
     }, [])
 
     
