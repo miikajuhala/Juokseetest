@@ -9,6 +9,7 @@ export default function LoginFacebook() {
                 width: '88%',
                 height: 60,
                 margin: 10
+                
             }}
             onPress={() => Alert.alert("pressed")}
             
