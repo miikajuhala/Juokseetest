@@ -19,34 +19,21 @@ const auth = getAuth(app)
 
 export default function StravaButton() {
 
-    const redirectURL =
+    const redirecturlIOS =
      makeRedirectUri({
-        scheme: 'exp',
-        path: 'redirect',
-        preferLocalhost: true
+     preferLocalhost: true
     })
-    // MUISTA EXP SCHEME 
-    makeRedirectUri({
-        scheme: 'scheme',
-        preferLocalhost: true,
-        isTripleSlashed: true,
-    })
-    // AuthSession.makeRedirectUri({useProxy:true}) //=https://auth.expo.io/@miikajuhala/urheilukelloappi
-            //AuthSession.makeRedirectUri({
-                // scheme: 'scheme',
-                // preferLocalhost: true,
-                // isTripleSlashed: true,
-            // })
-            //"exp://127.0.0.1:19000/redirect", Toimii vain ios jostain syystä
-            //
-    console.log(redirectURL)
+    const redirecturlANDROID =
+    makeRedirectUri({})
+ 
+    console.log(redirecturlIOS)
 
     const [request, response, promptAsync] = useAuthRequest(
        
         {
           clientId: '76862',
           scopes: ['activity:read_all'],
-          redirectUri: redirectURL
+          redirectUri: redirecturlIOS
 
         },
         discovery
