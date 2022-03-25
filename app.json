@@ -3,6 +3,7 @@
     "name": "juokseejuoksee",
     "slug": "juokseejuoksee",
     "version": "1.0.0",
+    "scheme":"exp",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
