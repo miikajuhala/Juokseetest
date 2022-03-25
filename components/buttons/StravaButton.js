@@ -1,11 +1,13 @@
 import * as React from 'react'
 import * as WebBrowser from 'expo-web-browser'
-import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
+import { makeRedirectUri, useAuthRequest} from 'expo-auth-session'
 import { Button } from 'react-native'
 import axios from 'axios'
 import { app } from '../../database/firebase'
 import { getAuth} from "firebase/auth"
 import { push, ref, set, db} from "firebase/database"
+import * as AuthSession from 'expo-auth-session';
+
 
 const discovery = {
     authorizationEndpoint: 'https://www.strava.com/oauth/mobile/authorize',
@@ -17,12 +19,35 @@ const auth = getAuth(app)
 
 export default function StravaButton() {
 
+    const redirectURL =
+     makeRedirectUri({
+        scheme: 'exp',
+        path: 'redirect',
+        preferLocalhost: true
+    })
+    // MUISTA EXP SCHEME 
+    makeRedirectUri({
+        scheme: 'scheme',
+        preferLocalhost: true,
+        isTripleSlashed: true,
+    })
+    // AuthSession.makeRedirectUri({useProxy:true}) //=https://auth.expo.io/@miikajuhala/urheilukelloappi
+            //AuthSession.makeRedirectUri({
+                // scheme: 'scheme',
+                // preferLocalhost: true,
+                // isTripleSlashed: true,
+            // })
+            //"exp://127.0.0.1:19000/redirect", Toimii vain ios jostain syystä
+            //
+    console.log(redirectURL)
+
     const [request, response, promptAsync] = useAuthRequest(
+       
         {
           clientId: '76862',
           scopes: ['activity:read_all'],
-          redirectUri: "exp://127.0.0.1:19000/redirect", //productissa expon oma redirect osote
-        
+          redirectUri: redirectURL
+
         },
         discovery
       );
@@ -51,7 +76,7 @@ export default function StravaButton() {
                 athlete_id: tokens.athlete.id
             }
         )
-        .catch(err => Alert.alert("Jokin meni pieleen"))
+        .catch(err => Alert.alert("Jokin meni pieleen"+err))
     }
 
 
