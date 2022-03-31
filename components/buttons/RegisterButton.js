@@ -5,6 +5,8 @@ import { push, ref, set, db} from "firebase/database"
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
 import axios from "axios"
 import React from 'react'
+import userContext from "../../context/user/userContext"
+import { useContext } from "react"
 
 const auth = getAuth(app)
 
@@ -15,19 +17,28 @@ const discovery = {
   }; 
 
   
-export default function RegisterButton({navigation, email, password, passwordAgain}) {
+export default function RegisterButton({ email, password, passwordAgain }) {
 
-    
-    const register = () => {
+    const { state, register } = useContext(userContext)
+
+    const tryRegister = () => {
         if (email === "" || password !== passwordAgain || password === "") {
             Alert.alert("Tarkista antamasi tiedot", "Yritä uudelleen...")
         } else {
-            createUserWithEmailAndPassword(auth, email, password)
-            .then((user) => {
-                addUserToDatabase()       
-            })
-            .catch(err => console.error(err))
+            createUser()
         }
+    }
+
+    const createUser = () => {
+        createUserWithEmailAndPassword(auth, email, password)
+        .then(user => {
+            if (user) {
+                register({
+                    user: user
+                })
+            }
+        })
+        .catch(err => console.log(err))
     }
 
     const addUserToDatabase = () => {
@@ -45,7 +56,7 @@ export default function RegisterButton({navigation, email, password, passwordAga
     return (
         <Button 
             title="Rekistöidy"
-            onPress={register}
+            onPress={tryRegister}
         />
     )
 }

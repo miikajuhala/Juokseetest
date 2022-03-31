@@ -1,27 +1,27 @@
 import { Button, Alert } from 'react-native';
 import { app } from '../../database/firebase'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-// import { saveUser } from '../phone_storage/asyncStorage'
 
 const auth = getAuth(app)
 
-export default function LoginButton({email, password, empty}) {
-
-    const login = async () => {
-        try {
-            const user = await signInWithEmailAndPassword(auth, email, password)
-            // saveUser(user)
-            empty()
-        } catch (err) {
-            Alert.alert("Yritä uudestaan / rekisteröidy", "Käyttäjänimi tai salasana väärin...")
-        }
+export default function LoginButton({email, password, login}) {
+    
+    const tryLogin = () => {
+        signInWithEmailAndPassword(auth, email, password)
+        .then(user => {
+            if (user) {
+                login({
+                    user: user
+                })
+            }
+        })
+        .catch(err => console.log(err))
     }
- 
 
     return (
         <Button 
             title='Kirjaudu' 
-            onPress={login}
+            onPress={tryLogin}
         />
     )
 }

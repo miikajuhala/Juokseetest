@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { View, Text, ImageBackground, TextInput, Button } from "react-native";
 import LoginButton from "../../components/buttons/LoginButton";
 import LoginFacebook from "../../components/buttons/LoginFacebook";
 import LoginGoogle from "../../components/buttons/LoginGoogle";
 import Image from '../../assets/background.jpg'
+import userContext from "../../context/user/userContext";
+import { StatusBar } from "expo-status-bar";
 
 export default function Login({navigation}) {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const { login, register } = useContext(userContext)
 
     const EmptyemailAndPassword = () => {
         setEmail('')
@@ -64,9 +67,10 @@ export default function Login({navigation}) {
                         }}                     
                         onChangeText={pass => setPassword(pass)}
                         value={password}  
+                        secureTextEntry={true}
                     />
                     <View style= {{ margin: 20, width: '80%' }}>
-                        <LoginButton email={email} password={password} empty={EmptyemailAndPassword} />
+                        <LoginButton email={email} password={password} empty={EmptyemailAndPassword} login={login} />
                     </View>
                     <View style= {{ marginBottom: 20, width: '80%' }}>
                         <Button 
@@ -82,6 +86,7 @@ export default function Login({navigation}) {
                     
                 </View>
             </ImageBackground>   
+            <StatusBar style="auto" />
         </View>
     )
     

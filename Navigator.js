@@ -1,14 +1,15 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, ImageBackground } from '@react-navigation/native';
 import { Ionicons} from '@expo/vector-icons'; 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { app } from './database/firebase'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Profile from './screens/profile/Profile';
 import RoomNavigator from './screens/room/RoomNavigator';
 import CreateRoom from './screens/room/CreateRoom';
 import LoginNavigator from './screens/login/LoginNavigator';
-
+import userContext from './context/user/userContext';
+import WelcomePage from './WelcomePage';
 
 const auth = getAuth(app)
 
@@ -16,15 +17,14 @@ const Tab = createBottomTabNavigator();
 
 export default function Navigator() {
 
-  const [logged, setLogged] = useState(false)
+  const { state, seenWelcome } = useContext(userContext)
+  const [test, setTest] = useState(true)
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setLogged(true)
-      }
-    })
-  })
+    setTimeout(() => {
+      seenWelcome()
+    }, 4000);
+  }, [])
   
   const screenOptions = ({ route }) => ({
     tabBarIcon: ({ focused, color, size }) => {
@@ -44,7 +44,11 @@ export default function Navigator() {
     }
   });
 
-  if (logged) {
+  while (!state.seenWelcome) {
+    return <WelcomePage />
+  }
+
+  if (state.user) {
     return (
       <NavigationContainer>      
           <Tab.Navigator screenOptions={screenOptions}>
@@ -58,7 +62,7 @@ export default function Navigator() {
     return (
       <NavigationContainer>      
             <Tab.Navigator screenOptions={screenOptions}>
-                <Tab.Screen name="Login" component={LoginNavigator} options={{ headerShown: false}}  />
+                <Tab.Screen name="Login" component={LoginNavigator} options={{ headerShown: false, tabBarStyle: { display: 'none' }}}  />
             </Tab.Navigator>
       </NavigationContainer>
     );
