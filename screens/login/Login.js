@@ -13,7 +13,7 @@ export default function Login({navigation}) {
     const [password, setPassword] = useState('')
     const { login, register } = useContext(userContext)
 
-    const EmptyemailAndPassword = () => {
+    const EmptyemailAndPassword = () => { 
         setEmail('')
         setPassword('')
     }
