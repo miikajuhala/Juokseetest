@@ -22,6 +22,10 @@ const userActions = (state, action) => {
                 ...state,
                 seenWelcome: action.payload
             }
+        default:
+            return {
+                ...state
+            }
     }
 }
 
