@@ -48,13 +48,13 @@ export default function Navigator() {
     return <WelcomePage />
   }
 
-  if (state.user) {
+  if (state.user.user) {
     return (
       <NavigationContainer>      
           <Tab.Navigator screenOptions={screenOptions}>
               <Tab.Screen name="Profiili" component={Profile} options={{ headerShown: false}}  />
               <Tab.Screen name="Kilpailut" component={RoomNavigator} options={{ headerShown: false}} />
-              <Tab.Screen name="Luo" component={CreateRoom} />
+              <Tab.Screen name="Luo" component={CreateRoom} options={{ headerShown: false }} />
           </Tab.Navigator>
       </NavigationContainer>
     )

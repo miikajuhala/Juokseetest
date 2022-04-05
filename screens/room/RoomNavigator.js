@@ -9,7 +9,7 @@ export default function RoomNavigator() {
 
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Rooms" component={Rooms} />
+            <Stack.Screen name="Rooms" component={Rooms} options={{ headerShown: false }} />
             <Stack.Screen name="Room" component={Room} />
         </Stack.Navigator>
     )
