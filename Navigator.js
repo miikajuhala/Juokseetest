@@ -11,6 +11,8 @@ import LoginNavigator from './screens/login/LoginNavigator';
 import userContext from './context/user/userContext';
 import WelcomePage from './WelcomePage';
 import RoomTopNavigator from './screens/room/RoomTopNavigator';
+import { Text } from 'react-native';
+import StravaWelcome from './screens/login/StravaWelcome';
 
 const auth = getAuth(app)
 
@@ -24,7 +26,7 @@ export default function Navigator() {
   useEffect(() => {
     setTimeout(() => {
       seenWelcome()
-    }, 4000);
+    }, 2000);
   }, [])
   
   const screenOptions = ({ route }) => ({
@@ -45,11 +47,15 @@ export default function Navigator() {
     }
   });
 
+ 
+console.log(state)
+
   while (!state.seenWelcome) {
     return <WelcomePage />
   }
 
-  if (state.user.user) {
+
+  if (state.user.user && state.strava === true) {
     return (
       <NavigationContainer>      
           <Tab.Navigator screenOptions={screenOptions}>
@@ -59,7 +65,18 @@ export default function Navigator() {
           </Tab.Navigator>
       </NavigationContainer>
     )
-  } else {
+  } 
+  else if(state.user.user && state.strava !== true){
+    return(
+      <NavigationContainer>      
+            <Tab.Navigator screenOptions={screenOptions}>
+                <Tab.Screen name="StravaWelcome" component={StravaWelcome} options={{ headerShown: false, tabBarStyle: { display: 'none' }}}  />
+            </Tab.Navigator>
+      </NavigationContainer>
+    );
+  }
+  
+  else {
     return (
       <NavigationContainer>      
             <Tab.Navigator screenOptions={screenOptions}>

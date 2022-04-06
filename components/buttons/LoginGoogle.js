@@ -1,14 +1,18 @@
+import { useContext } from "react";
 import { ImageBackground, Pressable, Alert } from "react-native";
- import GoogleImg from '../../assets/google.png'
+import GoogleImg from '../../assets/google.png'
 import { initializeApp } from 'firebase/app';
 import * as Google from 'expo-google-app-auth';
 // import { saveUser } from '../phone_storage/asyncStorage'
-
+import userContext from "../../context/user/userContext";
 
 
 import { getAuth, onAuthStateChanged, signInWithCredential, GoogleAuthProvider} from "firebase/auth";
 export default function LoginGoogle({navigation}) {
+
     const auth = getAuth();
+    const { login, register } = useContext(userContext)
+
 
     function isUserEqual(googleUser, firebaseUser) {
       if (firebaseUser) {
@@ -29,7 +33,13 @@ export default function LoginGoogle({navigation}) {
           );
     
           // Sign in with credential from the Google user.
-          const user = signInWithCredential(auth, credential)
+          signInWithCredential(auth, credential).then(user => {
+            if (user) {
+                login({
+                    user: user
+                })
+            }
+        })
         //   saveUser(user)
           empty()
           .catch((error) => {

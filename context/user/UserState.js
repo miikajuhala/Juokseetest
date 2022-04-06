@@ -1,13 +1,16 @@
 import UserContext from "./userContext";
 import { useReducer } from "react";
-import { LOGIN, LOGOUT, REGISTER,SEEN_WELCOME } from "./userActions";
+import { LOGIN, LOGOUT, REGISTER,SEEN_WELCOME, STRAVA } from "./userActions";
 import userReducer from "./userReducer";
 
+
 export default function UserState(props) {
+    
 
     const initialState = {
         user: null,
-        seenWelcome: false
+        seenWelcome: false,
+        strava: null
     }
 
     const [state, dispatch] = useReducer(userReducer, initialState)
@@ -18,6 +21,14 @@ export default function UserState(props) {
             payload: user
         })
     }
+
+    const strava = (user) => {
+        dispatch({
+            type: STRAVA,
+            payload: true
+        })
+    }
+ 
 
     const logout = () => {
         dispatch({
@@ -41,7 +52,7 @@ export default function UserState(props) {
 
     return (
         <UserContext.Provider value={{
-            state, login, logout, register, seenWelcome
+            state, login, logout, register, seenWelcome, strava
         }}>
             {props.children}
         </UserContext.Provider>

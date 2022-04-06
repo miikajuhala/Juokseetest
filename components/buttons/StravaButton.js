@@ -1,12 +1,14 @@
 import * as React from 'react'
 import * as WebBrowser from 'expo-web-browser'
 import { makeRedirectUri, useAuthRequest} from 'expo-auth-session'
-import { Button } from 'react-native'
+import { Button, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import axios from 'axios'
 import { app } from '../../database/firebase'
 import { getAuth} from "firebase/auth"
 import { push, ref, set, db} from "firebase/database"
 import * as AuthSession from 'expo-auth-session';
+import userContext from '../../context/user/userContext'
+import LogoutButton from './LogoutButton'
 
 
 const discovery = {
@@ -18,6 +20,8 @@ const discovery = {
 const auth = getAuth(app)
 
 export default function StravaButton() {
+
+    const { login, register, strava } = React.useContext(userContext)
 
     const redirecturlIOS =
      makeRedirectUri({
@@ -43,6 +47,9 @@ export default function StravaButton() {
         if (response?.type === 'success') {
           const { code } = response.params
           getAthleteTokens(code)
+
+          strava()
+
           }
     }, [response]);
 
@@ -69,12 +76,37 @@ export default function StravaButton() {
 
     return(
        
-        <Button
-        disabled={!request}
-        title="Kirjaudu Stravaan"
+<>
+
+        <TouchableOpacity
+        style={styles.buttonContainer2}
         onPress={() => {
-        promptAsync();
-        }}
-        />
+            promptAsync();
+        }}>
+            <Text style={styles.text}>Kirjaudu Stravaan</Text>
+        </TouchableOpacity>
+
+      {/* <LogoutButton></LogoutButton> */}
+        
+</>
     )
-}
+}const styles = StyleSheet.create({
+    
+    buttonContainer2: {
+        flex: 1,
+        bottom:0,
+        position:"absolute",
+        backgroundColor: 'transparent',
+        flexDirection: 'row',
+        marginBottom: "30%",
+      },
+    button: {
+      flex: 1,
+      alignItems: 'center',
+      color: "red"
+    },
+    text: {
+      fontSize: 20,
+      color: 'white',
+    },
+  });

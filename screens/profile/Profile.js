@@ -12,7 +12,7 @@ export default function Profile({navigation}) {
             <View style={{ marginTop:50 }}>
             <LogoutButton />
             </View>
-            <StravaButton />
+           
         </View>
     )
 }

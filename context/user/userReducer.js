@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, REGISTER, SEEN_WELCOME } from "./userActions";
+import { LOGIN, LOGOUT, REGISTER, SEEN_WELCOME, STRAVA } from "./userActions";
 
 const userActions = (state, action) => {
     switch (action.type) {
@@ -7,10 +7,16 @@ const userActions = (state, action) => {
                 ...state,
                 user: action.payload
             }
+            case STRAVA:
+                return {
+                    ...state,
+                    strava: action.payload
+                }
         case LOGOUT:
             return {
-                ...state,
-                user: null
+                user: null,
+                seenWelcome: false,
+                strava: null
             }
         case REGISTER:
             return {
